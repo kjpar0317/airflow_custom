@@ -1,0 +1,186 @@
+import {
+  useState,
+  useEffect,
+  useCallback,
+  useImperativeHandle,
+  forwardRef,
+  type ReactElement,
+  type ReactNode,
+  type Ref,
+} from "react";
+
+import gsap from "gsap";
+import clsx from "clsx";
+
+interface IGsapModal {
+  id?: string;
+  open?: boolean;
+  children: ReactNode;
+  background?: string;
+  className?: string;
+  onTest?: () => void;
+  onSave?: () => void;
+  onDelete?: () => void;
+  onClose?: () => void;
+}
+
+export interface IGsapModalOut {
+  modalClose: () => void;
+}
+
+const GsapModal = forwardRef(function GsapModal(
+  {
+    id = "modal_overlay",
+    open,
+    children,
+    background = "primary",
+    className,
+    onTest,
+    onSave,
+    onDelete,
+    onClose,
+  }: Readonly<IGsapModal>,
+  ref: Ref<IGsapModalOut>
+): ReactElement {
+  const [modalTimeline, setModalTimeline] = useState<gsap.core.Timeline>(
+    gsap.timeline({})
+  );
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        modalClose() {
+          modalTimeline.reverse();
+        },
+      };
+    },
+    [modalTimeline]
+  );
+
+  useEffect(() => {
+    if (open) {
+      let timeline = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+
+      timeline
+        .to("#" + id, {
+          scaleY: 0.01,
+          x: 1,
+          opacity: 1,
+          display: "flex",
+          duration: 0.4,
+          zIndex: 999,
+        })
+        .to("#" + id, {
+          scaleY: 1,
+          background: "rgba(255,255,255,0.16)",
+          duration: 0.6,
+        })
+        .to(
+          "#" + id + " #second",
+          { scaleY: 1, opacity: 1, duration: 0.6 },
+          "-=0.4"
+        )
+        .to(
+          "#" + id + " #third",
+          { scaleY: 1, opacity: 1, duration: 0.4 },
+          "-=0.2"
+        )
+        .to(
+          "#" + id + " #fourth",
+          {
+            background: "rgba(255,255,255,0.3)",
+            border: "1px solid rgba(255,255,255,0.3)",
+            duration: 0.8,
+          },
+          "-=0.4"
+        );
+
+      setModalTimeline(timeline);
+    }
+  }, [id, open]);
+
+  const handleSave = useCallback(() => {
+    // modalTimeline.reverse();
+    onSave?.();
+  }, [onSave]);
+
+  const handleDelete = useCallback(() => {
+    // modalTimeline.reverse();
+    onDelete?.();
+  }, [onDelete]);
+
+  const handleClose = useCallback(() => {
+    modalTimeline.reverse();
+    onClose?.();
+  }, [modalTimeline, onClose]);
+
+  return (
+    <div
+      id={id}
+      className={clsx(
+        `bg-${background}/60`,
+        "absolute z-10 left-0 top-0 h-full w-full flex items-center justify-center py-3 px-2 backdrop-blur-sm scale-y-0 -translate-x-full opacity-0 origin-center"
+      )}
+    >
+      <div
+        id="fourth"
+        className={clsx(
+          `bg-${background}/0`,
+          "m-auto mb-0 sm:mb-auto p-1 border border-white/0 rounded-2xl shadow-sm"
+        )}
+      >
+        <div
+          id="second"
+          className="p-2 sm:p-3 rounded-xl shadow-sm scale-y-0 opacity-0"
+        >
+          <div id="third" className="scale-y-0 opacity-0 items-center">
+            <div className="card w-full bg-base-100 shadow-xl z-auto">
+              <div className="card-body gap-0 pt-4 pl-2 pr-2 pb-2">
+                <div
+                  className={clsx(
+                    "min-w-4/5 max-h-[calc(100vh_-_50px)] overflow-y-auto",
+                    className
+                  )}
+                >
+                  {children}
+                </div>
+                <div className="card-actions justify-end mt-3">
+                  {onTest && (
+                    <button className="btn btn-sm btn-info" onClick={onTest}>
+                      테스트
+                    </button>
+                  )}
+                  {onSave && (
+                    <button
+                      className="btn btn-sm btn-success"
+                      onClick={handleSave}
+                    >
+                      저장
+                    </button>
+                  )}
+                  {onDelete && (
+                    <button
+                      className="btn btn-sm btn-error"
+                      onClick={handleDelete}
+                    >
+                      삭제
+                    </button>
+                  )}
+                  <button
+                    className={clsx("btn btn-sm", `btn-${background}`)}
+                    onClick={handleClose}
+                  >
+                    닫기
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+export default GsapModal;

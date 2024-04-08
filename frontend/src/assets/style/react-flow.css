@@ -1,0 +1,202 @@
+.rhombus {
+  width: 0px;
+  height: 0px;
+  border-right: 40px solid #666666;
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+  position: relative;
+  /* left: -10%; */
+}
+.rhombus:after {
+  content: "";
+  border-left: 43px solid #666666;
+  border-top: 32px solid transparent;
+  border-bottom: 32px solid transparent;
+  position: absolute;
+  top: -32px;
+  left: 40px;
+}
+
+/* .react-flow {
+  --tw-bg-opacity: 1;
+  --bg-color: oklch(var(--b2) / var(--tw-bg-opacity));
+  --text-color: oklch(var(--bc) / var(--tw-bg-opacity));
+  --node-border-radius: 10px;
+  --node-box-shadow: 10px 0 15px oklch(var(--p) / var(--tw-bg-opacity)),
+    -10px 0 15px oklch(var(--pc) / var(--tw-bg-opacity));
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+.react-flow__node-custom {
+  border-radius: var(--node-border-radius);
+  display: flex;
+  height: 70px;
+  min-width: 150px;
+  font-family: "Fira Mono", Monospace;
+  font-weight: 500;
+  letter-spacing: -0.2px;
+  box-shadow: var(--node-box-shadow);
+}
+
+.react-flow__node-custom .wrapper {
+  overflow: hidden;
+  display: flex;
+  padding: 2px;
+  position: relative;
+  border-radius: var(--node-border-radius);
+  flex-grow: 1;
+}
+
+.gradient:before {
+  --tw-bg-opacity: 1;
+  content: "";
+  position: absolute;
+  padding-bottom: calc(100% * 1.41421356237);
+  width: calc(100% * 1.41421356237);
+  background: conic-gradient(
+    from -160deg at 50% 50%,
+    oklch(var(--p) / var(--tw-bg-opacity)) 0deg,
+    oklch(var(--s) / var(--tw-bg-opacity)) 120deg,
+    oklch(var(--sc) / var(--tw-bg-opacity)) 240deg,
+    oklch(var(--pc) / var(--tw-bg-opacity)) 360deg
+  );
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 100%;
+}
+
+.react-flow__node-custom.selected .wrapper.gradient:before {
+  content: "";
+  background: conic-gradient(
+    from -160deg at 50% 50%,
+    oklch(var(--p) / var(--tw-bg-opacity)) 0deg,
+    oklch(var(--s) / var(--tw-bg-opacity)) 120deg,
+    oklch(var(--sc) / var(--tw-bg-opacity)) 240deg,
+    oklch(var(--pc) / var(--tw-bg-opacity)) 360deg
+  );
+  animation: spinner 4s linear infinite;
+  transform: translate(-50%, -50%) rotate(0deg);
+  z-index: -1;
+}
+
+@keyframes spinner {
+  100% {
+    transform: translate(-50%, -50%) rotate(-360deg);
+  }
+}
+
+.react-flow__node-custom .inner {
+  background: var(--bg-color);
+  padding: 16px 20px;
+  border-radius: var(--node-border-radius);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex-grow: 1;
+  position: relative;
+}
+
+.react-flow__node-custom .icon {
+  margin-right: 8px;
+}
+
+.react-flow__node-custom .body {
+  display: flex;
+}
+
+.react-flow__node-custom .title {
+  font-size: 16px;
+  margin-bottom: 2px;
+  line-height: 1;
+}
+
+.react-flow__node-custom .subline {
+  --tw-bg-opacity: 1;
+  font-size: 12px;
+  color: oklch(var(--bc) / var(--tw-bg-opacity));
+} */
+
+.cloud {
+  border-radius: 100%;
+  width: 15px;
+  height: 15px;
+  right: 0;
+  position: absolute;
+  top: 0;
+  transform: translate(50%, -50%);
+  display: flex;
+  transform-origin: center center;
+  /* padding: 2px; */
+  overflow: hidden;
+  /* box-shadow: var(--node-box-shadow); */
+  z-index: 1;
+}
+
+/* .cloud div {
+  background-color: var(--bg-color);
+  flex-grow: 1;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+} */
+/* 
+.react-flow__handle {
+  opacity: 0;
+}
+
+.react-flow__handle.source {
+  right: -10px;
+}
+
+.react-flow__handle.target {
+  left: -10px;
+}
+
+.react-flow__node:focus {
+  outline: none;
+}
+
+.react-flow__edge .react-flow__edge-path {
+  stroke: url(#edge-gradient);
+  stroke-width: 2;
+  stroke-opacity: 0.75;
+}
+
+.react-flow__controls button {
+  --tw-bg-opacity: 1;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid oklch(var(--s) / var(--tw-bg-opacity));
+  border-bottom: none;
+}
+
+.react-flow__controls button:hover {
+  --tw-bg-opacity: 1;
+  background-color: oklch(var(--sc) / var(--tw-bg-opacity));
+}
+
+.react-flow__controls button:first-child {
+  border-radius: 5px 5px 0 0;
+}
+
+.react-flow__controls button:last-child {
+  border-bottom: 1px solid #95679e;
+  border-radius: 0 0 5px 5px;
+}
+
+.react-flow__controls button path {
+  fill: var(--text-color);
+}
+
+.react-flow__attribution {
+  --tw-bg-opacity: 1;
+  background: oklch(var(--pc) / var(--tw-bg-opacity));
+}
+
+.react-flow__attribution a {
+  color: oklch(var(--sc) / var(--tw-bg-opacity));
+} */
