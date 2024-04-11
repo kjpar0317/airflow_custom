@@ -4,17 +4,10 @@ import type { IColDef, TData } from "@/type/aggrid";
 
 import { useState, useEffect, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
-import { ReactFlowProvider } from "reactflow";
-import { ToastContainer } from "react-toastify";
 
 import FlowGridDetail from "@/components/features/flows/FlowGridDetail";
 
-// json stringfy 시 bigint 문제
-BigInt.prototype.toJSON = function () {
-  return this.toString();
-};
-
-export default function Home() {
+export default function DagTask() {
   const [rowData, setRowData] = useState<ICmpDag[]>();
   const [gridRow, setGridRow] = useState<ICmpDag>();
   const [open, setOpen] = useState<boolean>(false);
@@ -56,33 +49,34 @@ export default function Home() {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24 w-full">
-      <ReactFlowProvider>
-        <div className="flex justify-end w-full">
-          <button className="btn btn-primary btn-sm" onClick={handleOpen}>
-            추가
-          </button>
+    <div className="w-11/12 h-full content-center">
+      <div className="flex justify-end w-full mb-2">
+        <button className="btn btn-primary btn-sm" onClick={handleOpen}>
+          추가
+        </button>
+      </div>
+      <div className="drawer drawer-end contents w-full">
+        <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
+        <div className="ag-theme-alpine w-full h-[650px]">
+          <AgGridReact
+            pagination
+            paginationAutoPageSize
+            rowData={rowData}
+            headerHeight={38}
+            rowHeight={38}
+            columnDefs={columnDefs}
+            className="w-full h-full"
+            onRowClicked={handleGridClick}
+          ></AgGridReact>
         </div>
-        <div className="drawer drawer-end contents">
-          <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
-          <div className="ag-theme-alpine w-full h-[650px]">
-            <AgGridReact
-              rowData={rowData}
-              columnDefs={columnDefs}
-              className="w-full h-full"
-              onRowClicked={handleGridClick}
-            ></AgGridReact>
-          </div>
-          <FlowGridDetail
-            key={`${open}`}
-            open={open}
-            mode={mode}
-            row={gridRow}
-            onClose={handleClose}
-          />
-        </div>
-      </ReactFlowProvider>
-      <ToastContainer position="bottom-right" autoClose={2000} closeOnClick />
-    </main>
+        <FlowGridDetail
+          key={`${open}`}
+          open={open}
+          mode={mode}
+          row={gridRow}
+          onClose={handleClose}
+        />
+      </div>
+    </div>
   );
 }

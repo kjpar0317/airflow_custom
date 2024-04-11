@@ -29,12 +29,12 @@ dependencies:
   daisyui:
     specifier: ^4.9.0
     version: 4.9.0(postcss@8.4.38)
-  drawflow:
-    specifier: ^0.0.59
-    version: 0.0.59
   gsap:
     specifier: ^3.12.5
     version: 3.12.5
+  lodash-es:
+    specifier: ^4.17.21
+    version: 4.17.21
   mariadb:
     specifier: ^3.3.0
     version: 3.3.0
@@ -68,14 +68,17 @@ dependencies:
   swr:
     specifier: ^2.2.5
     version: 2.2.5(react@18.2.0)
+  tailwind-merge:
+    specifier: ^2.2.2
+    version: 2.2.2
   yup:
     specifier: ^1.4.0
     version: 1.4.0
 
 devDependencies:
-  '@types/drawflow':
-    specifier: ^0.0.11
-    version: 0.0.11
+  '@types/lodash-es':
+    specifier: ^4.17.12
+    version: 4.17.12
   '@types/node':
     specifier: ^20
     version: 20.12.2
@@ -249,7 +252,7 @@ packages:
       fast-deep-equal: 3.1.3
       immer: 10.0.4
       lodash-es: 4.17.21
-      lucide-react: 0.364.0(react@18.2.0)
+      lucide-react: 0.367.0(react@18.2.0)
       nanoid: 4.0.2
       polished: 4.3.1
       react: 18.2.0
@@ -1459,10 +1462,6 @@ packages:
       '@types/ms': 0.7.34
     dev: false
 
-  /@types/drawflow@0.0.11:
-    resolution: {integrity: sha512-FkfkC0GUZJ6gEhwKR3WU0weiSwEfERiA0y6RD3t/RHsAqHZTh9jxG2BqFniFDxuiseD4W0yXxxsAphT2jdbXjQ==}
-    dev: true
-
   /@types/geojson@7946.0.14:
     resolution: {integrity: sha512-WCfD5Ht3ZesJUsONdhvm84dmzWOiOzOAqOncN0++w0lBw1o8OuDNJF2McvvCef/yBqb/HYRahp1BYtODFQ8bRg==}
     dev: false
@@ -1494,6 +1493,16 @@ packages:
   /@types/katex@0.16.7:
     resolution: {integrity: sha512-HMwFiRujE5PjrgwHQ25+bsLJgowjGjm5Z8FVSf0N6PwgJrwxH0QxzHYDcKsTfV3wva0vzrpqMTJS2jXPr5BMEQ==}
     dev: false
+
+  /@types/lodash-es@4.17.12:
+    resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
+    dependencies:
+      '@types/lodash': 4.17.0
+    dev: true
+
+  /@types/lodash@4.17.0:
+    resolution: {integrity: sha512-t7dhREVv6dbNj0q17X12j7yDG4bD/DHYX7o5/DbDxobP0HnGPgpRz2Ej77aL7TZT3DSw13fqUTj8J4mMnqa7WA==}
+    dev: true
 
   /@types/mdast@3.0.15:
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -2468,10 +2477,6 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
-
-  /drawflow@0.0.59:
-    resolution: {integrity: sha512-HJM/8trYzignViTMzUSpskRclDhE62jM6oxjgqEJQBbkX9QvDG7JJwRlvdjqnjfL192Pdb0aIysrZMUqG8/vyg==}
-    dev: false
 
   /duplexer2@0.1.4:
     resolution: {integrity: sha512-asLFVfWWtJ90ZyOUHMqk7/S2w2guQKxUI2itj3d92ADHhxUSbCMGi1f1cBcJ7xM1To+pE/Khbwo1yuNbMEPKeA==}
@@ -3898,8 +3903,8 @@ packages:
       yallist: 4.0.0
     dev: true
 
-  /lucide-react@0.364.0(react@18.2.0):
-    resolution: {integrity: sha512-eHfdbJExWtTaZ0tBMGtI7PA/MbqV5wt+o4/yitDce17tadH/75Gq3Tq8jSteb3LhLr0eay/j5YUuN4yXjnI3aw==}
+  /lucide-react@0.367.0(react@18.2.0):
+    resolution: {integrity: sha512-3FWiBaJiqMrx5a1sjH3CVdPqWnw/Z/PTVeeTDmOeILSs+8Ah+VhCd4FQMeHo6Z0WxHcm9piIOtilQwvceiCCKQ==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0
     dependencies:
@@ -6206,6 +6211,12 @@ packages:
 
   /tabbable@6.2.0:
     resolution: {integrity: sha512-Cat63mxsVJlzYvN51JmVXIgNoUokrIaT2zLclCXjRd8boZ0004U4KCs/sToJ75C6sdlByWxpYnb5Boif1VSFew==}
+    dev: false
+
+  /tailwind-merge@2.2.2:
+    resolution: {integrity: sha512-tWANXsnmJzgw6mQ07nE3aCDkCK4QdT3ThPMCzawoYA2Pws7vSTCvz3Vrjg61jVUGfFZPJzxEP+NimbcW+EdaDw==}
+    dependencies:
+      '@babel/runtime': 7.24.1
     dev: false
 
   /tailwindcss@3.4.3:

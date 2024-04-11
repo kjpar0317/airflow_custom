@@ -1,28 +1,31 @@
 import type { DragEvent, ReactElement } from "react";
 
-import React from "react";
-import clsx from "clsx";
+import { useCallback } from "react";
+
+import { cn } from "@/util/comm_util";
 
 interface IFlowSideber {
   className?: string;
 }
 
-export default function FlowSidebar({ className }: IFlowSideber): ReactElement {
-  const onDragStart = (event: DragEvent, nodeType: string) => {
+export default function FlowSidebar({
+  className,
+}: Readonly<IFlowSideber>): ReactElement {
+  const onDragStart = useCallback((event: DragEvent, nodeType: string) => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
-  };
+  }, []);
 
   return (
-    <aside className={clsx(className, "flex")}>
+    <aside className={cn(className, "flex pt-3")}>
       <ul>
-        <li
+        {/* <li
           className="dndnode input text-xs md:text-sm"
           onDragStart={(event: DragEvent) => onDragStart(event, "custom")}
           draggable
         >
           SQL Operator
-        </li>
+        </li> */}
         <li
           className="dndnode input text-xs md:text-sm"
           onDragStart={(event: DragEvent) => onDragStart(event, "custom")}
@@ -30,19 +33,19 @@ export default function FlowSidebar({ className }: IFlowSideber): ReactElement {
         >
           Http Operator
         </li>
-        <li
+        {/* <li
           className="dndnode input text-xs md:text-sm"
           onDragStart={(event: DragEvent) => onDragStart(event, "custom")}
           draggable
         >
           Python Operator
-        </li>
+        </li> */}
         <li
           className="dndnode input text-xs md:text-sm"
           onDragStart={(event: DragEvent) => onDragStart(event, "branch")}
           draggable
         >
-          Branch
+          Branch Operator
         </li>
       </ul>
     </aside>

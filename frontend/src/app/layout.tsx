@@ -1,14 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
-import "reactflow/dist/style.css";
-import "react-toastify/dist/ReactToastify.css";
-
-import "./globals.css";
-import "@/assets/style/aggrid.css";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -23,7 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className} suppressHydrationWarning>
+        {children}
+      </body>
+      {/* <ToastContainer /> */}
     </html>
   );
 }

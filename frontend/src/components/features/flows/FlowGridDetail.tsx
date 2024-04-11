@@ -1,11 +1,11 @@
-import useFlow from "@/service/useFlow";
-import FlowGridModal from "@/components/features/flows/modal/FlowGridModal";
+import FlowGridModal from "./modal/FlowGridModal";
+import FlowDrawer from "./layout/FlowDrawer";
 
 interface IFlowGridDetail {
   key: React.Key;
   open: boolean;
   mode: string;
-  row?: ICmpDag | undefined;
+  row: ICmpDag | undefined;
   onClose: (redraw: boolean) => void;
 }
 
@@ -15,8 +15,6 @@ export default function FlowGridDetail({
   row,
   onClose,
 }: Readonly<IFlowGridDetail>) {
-  const flow = useFlow();
-
   return (
     <>
       <div className="drawer-content">
@@ -34,14 +32,7 @@ export default function FlowGridDetail({
           aria-label="close sidebar"
           className="drawer-overlay"
         ></label>
-        <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-          <li>
-            <a>Sidebar Item 1 {flow.currentNode?.id}</a>
-          </li>
-          <li>
-            <a>Sidebar Item 2</a>
-          </li>
-        </ul>
+        <FlowDrawer />
       </div>
     </>
   );

@@ -24,7 +24,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 
-import { convertFlowToAirflowPipeline } from "@/util/flow_util";
+import useFlow from "@/service/useFlow";
 import GsapModal, { type IGsapModalOut } from "@/components/modal/GsapModal";
 import {
   MonacoEditor,
@@ -60,7 +60,7 @@ const initialNodes: Node[] = [
   },
   {
     id: "end",
-    position: { x: 0, y: 300 },
+    position: { x: 0, y: 500 },
     data: { label: "END" },
     type: "output",
     deletable: false,
@@ -87,11 +87,11 @@ export default function FlowGridModal({
   row,
   onClose,
 }: Readonly<IFlowGridModal>): ReactElement {
+  const flow = useFlow();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance>();
-  const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isEditorOpen, setIsEditorOpen] = useState<boolean>(false);
   const {
     register,
@@ -179,17 +179,17 @@ export default function FlowGridModal({
         data: { label: `${type} node` },
       };
 
-      setNodes((nds) => nds.concat(newNode));
+      setNodes((nds: Node[]) => nds.concat(newNode));
     },
     [getId, reactFlowInstance, setNodes]
   );
 
-  useEffect(() => {
-    open && setIsOpen(true);
-  }, [open]);
-
   function handleTest() {
-    convertFlowToAirflowPipeline(edges);
+    if (flow.cloneNodes && flow.cloneNodes.length > 0) {
+      console.log(flow.convertFlowToAirflowPipeline(flow.cloneNodes, edges));
+    } else {
+      console.log(flow.convertFlowToAirflowPipeline(nodes, edges));
+    }
   }
   async function handleSave() {
     const data = getValues();
@@ -201,7 +201,7 @@ export default function FlowGridModal({
         method: "PUT",
         body: JSON.stringify({
           dag_name: data.dag_name,
-          dag_nodes: nodes,
+          dag_nodes: flow.cloneNodes ?? nodes,
           dag_edges: edges,
         }),
       });
@@ -213,7 +213,7 @@ export default function FlowGridModal({
         body: JSON.stringify({
           dag_id: data?.dag_id,
           dag_name: data?.dag_name,
-          dag_nodes: nodes,
+          dag_nodes: flow.cloneNodes ?? nodes,
           dag_edges: edges,
         }),
       });
@@ -222,7 +222,7 @@ export default function FlowGridModal({
     }
 
     modalRef.current?.modalClose?.();
-    setIsOpen(false);
+    flow.setCloneNodes([]);
     onClose?.(true);
   }
   async function handleDelete() {
@@ -235,14 +235,12 @@ export default function FlowGridModal({
     toast("삭제를 완료하였습니다.");
 
     modalRef.current?.modalClose?.();
-    setIsOpen(false);
+    flow.setCloneNodes([]);
     onClose?.(true);
   }
   function handleClose() {
-    setIsOpen(false);
     setIsEditorOpen(false);
-    // setNodes(initialNodes);
-    // setEdges([]);
+    flow.setCloneNodes([]);
     onClose?.(false);
   }
 
@@ -258,7 +256,7 @@ export default function FlowGridModal({
     <>
       <GsapModal
         id="modal1"
-        open={isOpen}
+        open={open}
         className="min-w-[450px] w-full lg:w-[1200px] h-[750px]"
         onTest={handleTest}
         onSave={handleSave}
@@ -353,7 +351,6 @@ export default function FlowGridModal({
       <GsapModal
         ref={modalRef}
         id="modal2"
-        background="secondary"
         open={isEditorOpen}
         onSave={handleEditorSave}
         onClose={handleEditorClose}

@@ -8,15 +8,14 @@ import {
   type ReactNode,
   type Ref,
 } from "react";
-
 import gsap from "gsap";
-import clsx from "clsx";
+
+import { sleep, cn } from "@/util/comm_util";
 
 interface IGsapModal {
   id?: string;
   open?: boolean;
   children: ReactNode;
-  background?: string;
   className?: string;
   onTest?: () => void;
   onSave?: () => void;
@@ -33,7 +32,6 @@ const GsapModal = forwardRef(function GsapModal(
     id = "modal_overlay",
     open,
     children,
-    background = "primary",
     className,
     onTest,
     onSave,
@@ -110,25 +108,20 @@ const GsapModal = forwardRef(function GsapModal(
     onDelete?.();
   }, [onDelete]);
 
-  const handleClose = useCallback(() => {
+  const handleClose = useCallback(async () => {
     modalTimeline.reverse();
+    await sleep(1500);
     onClose?.();
   }, [modalTimeline, onClose]);
 
   return (
     <div
       id={id}
-      className={clsx(
-        `bg-${background}/60`,
-        "absolute z-10 left-0 top-0 h-full w-full flex items-center justify-center py-3 px-2 backdrop-blur-sm scale-y-0 -translate-x-full opacity-0 origin-center"
-      )}
+      className="bg-primary/80 absolute z-10 left-0 top-0 h-full w-full flex items-center justify-center py-3 px-2 backdrop-blur-sm scale-y-0 -translate-x-full opacity-0 origin-center"
     >
       <div
         id="fourth"
-        className={clsx(
-          `bg-${background}/0`,
-          "m-auto mb-0 sm:mb-auto p-1 border border-white/0 rounded-2xl shadow-sm"
-        )}
+        className="bg-primary/0 m-auto mb-0 sm:mb-auto p-1 border border-white/0 rounded-2xl shadow-sm"
       >
         <div
           id="second"
@@ -138,7 +131,7 @@ const GsapModal = forwardRef(function GsapModal(
             <div className="card w-full bg-base-100 shadow-xl z-auto">
               <div className="card-body gap-0 pt-4 pl-2 pr-2 pb-2">
                 <div
-                  className={clsx(
+                  className={cn(
                     "min-w-4/5 max-h-[calc(100vh_-_50px)] overflow-y-auto",
                     className
                   )}
@@ -168,7 +161,7 @@ const GsapModal = forwardRef(function GsapModal(
                     </button>
                   )}
                   <button
-                    className={clsx("btn btn-sm", `btn-${background}`)}
+                    className="btn btn-sm btn-primary bg-primary/80 hover:bg-primary-focus"
                     onClick={handleClose}
                   >
                     닫기

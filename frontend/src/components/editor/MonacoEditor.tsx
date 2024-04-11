@@ -4,7 +4,6 @@ import type { ReactElement, Ref } from "react";
 
 import { useState, useImperativeHandle, forwardRef } from "react";
 import Editor, { useMonaco } from "@monaco-editor/react";
-import clsx from "clsx";
 
 interface IMonacoEditor {
   className?: string;
@@ -41,7 +40,7 @@ export const MonacoEditor = forwardRef(function MonacoEditor(
   }
 
   return (
-    <div className={clsx(className, "")}>
+    <div className={className}>
       <Editor
         height="90vh"
         defaultLanguage="python"
