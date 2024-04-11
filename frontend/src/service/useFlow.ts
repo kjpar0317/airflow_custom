@@ -43,14 +43,13 @@ export default function useFlow() {
       );
 
       return nodes
-        .filter(
-          (node: Node) =>
-            currentChildEdges.filter((edge: Edge) => node.id === edge.target)[0]
+        .filter((node: Node) =>
+          currentChildEdges.find((edge: Edge) => node.id === edge.target)
         )
         .map((node: Node) => {
-          const target = currentChildEdges.filter(
+          const target = currentChildEdges.find(
             (edge: Edge) => node.id === edge.target
-          )[0];
+          );
 
           if (target?.sourceHandle) {
             node.data.type = target.sourceHandle;

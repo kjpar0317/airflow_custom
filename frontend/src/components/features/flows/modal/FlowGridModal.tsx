@@ -7,7 +7,7 @@ import type {
 } from "reactflow";
 import type { ReactElement, DragEvent } from "react";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import ReactFlow, {
   addEdge,
   getIncomers,
@@ -66,20 +66,6 @@ const initialNodes: Node[] = [
     deletable: false,
   },
 ];
-const nodeTypes = {
-  custom: TextNode,
-  branch: BranchNode,
-  codeEditor: CodeEditorNode,
-};
-const edgeTypes = {
-  custom: CustomEdge,
-  branch: CustomEdge,
-  codeEditor: CustomEdge,
-};
-const defaultEdgeOptions = {
-  type: "custom",
-  markerEnd: "edge-circle",
-};
 
 export default function FlowGridModal({
   open,
@@ -116,6 +102,30 @@ export default function FlowGridModal({
   }, [row?.dag_edges, setEdges]);
 
   const getId = useCallback(() => `dndnode_${id++}`, [id]);
+
+  const nodeTypes = useMemo(
+    () => ({
+      custom: TextNode,
+      branch: BranchNode,
+      codeEditor: CodeEditorNode,
+    }),
+    []
+  );
+  const edgeTypes = useMemo(
+    () => ({
+      custom: CustomEdge,
+      branch: CustomEdge,
+      codeEditor: CustomEdge,
+    }),
+    []
+  );
+  const defaultEdgeOptions = useMemo(
+    () => ({
+      type: "custom",
+      markerEnd: "edge-circle",
+    }),
+    []
+  );
 
   const onConnect = useCallback(
     (params: Connection) => setEdges((eds: Edge[]) => addEdge(params, eds)),

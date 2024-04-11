@@ -17,6 +17,17 @@
   left: 39px;
 }
 
+.react-flow__node {
+  --tw-bg-opacity: 1;
+  background-color: oklch(var(--b2) / var(--tw-bg-opacity));
+  --tw-text-opacity: 1;
+  color: oklch(var(--bc) / var(--tw-text-opacity));
+  --tw-bg-opacity: 1;
+  border-width: 1px;
+  border-color: oklch(var(--p) / var(--tw-text-opacity));
+  border-bottom-style: solid;
+}
+
 /* .react-flow {
   --tw-bg-opacity: 1;
   --bg-color: oklch(var(--b2) / var(--tw-bg-opacity));

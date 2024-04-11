@@ -67,12 +67,12 @@ function CodeEditorNode({ data }: NodeProps) {
         <Handle
           type="target"
           position={Position.Top}
-          className="w-4 !bg-teal-500"
+          className="w-3 !bg-teal-500"
         />
         <Handle
           type="source"
           position={Position.Bottom}
-          className="w-4 !bg-teal-500"
+          className="w-3 !bg-teal-500"
         />
       </div>
       {/* <GsapModal background="bg-secondary" open={open} onClose={handleClose}>

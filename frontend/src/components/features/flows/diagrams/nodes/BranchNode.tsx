@@ -33,7 +33,7 @@ function BranchNode() {
   }, [flow, nodeId, nodes]);
 
   return (
-    <div className="relative h-[60px] z-0">
+    <div className="relative h-[60px] z-0 border-0">
       <div className="rhombus absolute h-[60px] z-1">
         <label
           htmlFor="my-drawer-4"

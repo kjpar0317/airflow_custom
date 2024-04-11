@@ -1,6 +1,7 @@
 import type { ReactElement, FormEvent } from "react";
 
 import { useCallback, useRef } from "react";
+import { useRouter } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { PiCircuitry } from "react-icons/pi";
@@ -9,6 +10,7 @@ import usePrefersReducedMotion from "@/hook/usePrefersReducedMotion";
 import useLayout from "@/service/useLayout";
 
 export default function Header(): ReactElement {
+  const router = useRouter();
   const container = useRef(null);
   const layout = useLayout();
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -48,6 +50,13 @@ export default function Header(): ReactElement {
     [layout]
   );
 
+  const handleLink = useCallback(
+    (url: string) => {
+      layout.doAnimatePageOut("#transition-element", url, router);
+    },
+    [layout, router]
+  );
+
   return (
     <header
       ref={container}
@@ -69,8 +78,17 @@ export default function Header(): ReactElement {
 
       <nav className="nav font-semibold text-lg w-full pl-4">
         <ul className="flex items-center">
-          <li className="p-4 border-b-2 border-primary border-opacity-0 hover:border-opacity-100 hover:text-primary duration-200 cursor-pointer text-sm active">
-            <a href="/">DAG TASK</a>
+          <li
+            className="p-4 border-b-2 border-primary border-opacity-0 hover:border-opacity-100 hover:text-primary duration-200 cursor-pointer text-sm active"
+            onClick={() => handleLink("/")}
+          >
+            <a href="#home">DAG TASK</a>
+          </li>
+          <li
+            className="p-4 border-b-2 border-primary border-opacity-0 hover:border-opacity-100 hover:text-primary duration-200 cursor-pointer text-sm active"
+            onClick={() => handleLink("/test")}
+          >
+            <a href="#test">TEST</a>
           </li>
         </ul>
       </nav>

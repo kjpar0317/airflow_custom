@@ -10,10 +10,10 @@ import mariadb from "mariadb";
 // });
 
 const connection = mariadb.createPool({
-  host: "localhost",
-  user: "airflow",
-  password: "airflow",
-  database: "airflow",
+  host: "192.168.130.215",
+  user: "tabcloudit",
+  password: "tabcloudit",
+  database: "tabcloudit",
 });
 
 export default connection;

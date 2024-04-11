@@ -21,14 +21,14 @@ export default function FlowDrawer(): ReactElement {
     () =>
       flow
         .getChildNodes(childNodes, edges)
-        ?.filter((node: Node) => node.data.type === "bottom")[0],
+        ?.find((node: Node) => node.data.type === "bottom"),
     [flow, childNodes, edges]
   );
   const falseChild: Node | undefined = useMemo(
     () =>
       flow
         .getChildNodes(childNodes, edges)
-        ?.filter((node: Node) => node.data.type === "right")[0],
+        ?.find((node: Node) => node.data.type === "right"),
     [flow, childNodes, edges]
   );
 
