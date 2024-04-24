@@ -5,17 +5,17 @@ import useSWR from "swr";
 
 import { FlowUtil } from "@/util/flow_util";
 
-let _currentNode: Node;
-let _cloneNodes: Node[];
+let _currentNode: Node; // Drawer에 쓰일라나.... 일단 나둬보자..
+let _editedNodeId: string = "";
 
 export default function useFlow() {
   const { data: currentNode, mutate: currentNodeMutate } = useSWR<Node>(
     "currentNode",
     () => _currentNode
   );
-  const { data: cloneNodes, mutate: cloneNodesMutate } = useSWR<Node[]>(
-    "cloneNodes",
-    () => _cloneNodes
+  const { data: editedNodeId, mutate: editedNodeIdMutate } = useSWR<string>(
+    "editedNodeId",
+    () => _editedNodeId
   );
 
   const setCurrentNode = useCallback(
@@ -26,14 +26,18 @@ export default function useFlow() {
     [currentNodeMutate]
   );
 
-  const setCloneNodes = useCallback(
-    (currentNodes: Node[]) => {
-      _cloneNodes = currentNodes;
-      return cloneNodesMutate();
+  const setEditedNodeId = useCallback(
+    (editedNodeId: string) => {
+      _editedNodeId = editedNodeId;
+      return editedNodeIdMutate();
     },
-    [cloneNodesMutate]
+    [editedNodeIdMutate]
   );
 
+  /**
+   * drawer에 쓰일려고 했는데.. 지금은 안쓰임
+   *
+   */
   const getChildNodes = useCallback(
     (nodes: Node[], edges: Edge[]) => {
       if (!currentNode || !nodes || !edges) return;
@@ -74,9 +78,9 @@ export default function useFlow() {
 
   return {
     currentNode,
-    cloneNodes,
+    editedNodeId,
     setCurrentNode,
-    setCloneNodes,
+    setEditedNodeId,
     getChildNodes,
     convertFlowToAirflowPipeline,
   };

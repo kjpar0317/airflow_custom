@@ -5,7 +5,7 @@ BigInt.prototype.toJSON = function () {
   return this.toString();
 };
 
-export default async function AppPage() {
+export default async function DagTaskPage() {
   return (
     <div className="w-full h-full flex justify-center">
       <DagTask />

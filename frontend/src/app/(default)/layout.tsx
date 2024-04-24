@@ -26,15 +26,15 @@ interface IRootProps {
 export default function DefaultLayout({
   children,
 }: Readonly<IRootProps>): ReactElement {
-  const layout = useLayout();
+  const { theme, doAnimatePageIn } = useLayout();
   const pathname = usePathname();
 
   useEffect(() => {
-    layout.doAnimatePageIn("#transition-element");
-  }, [layout, pathname]);
+    doAnimatePageIn("#transition-element");
+  }, [doAnimatePageIn, pathname]);
 
   return (
-    <div data-theme={layout.theme} className="w-full h-full bg-base-200">
+    <div data-theme={theme} className="w-full h-full bg-base-200">
       <Header />
       <main className="flex flex-col justify-between items-center w-full h-[calc(100vh_-_63px)]">
         <ReactFlowProvider>{children}</ReactFlowProvider>

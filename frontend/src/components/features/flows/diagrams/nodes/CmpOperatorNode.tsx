@@ -12,7 +12,7 @@ import {
 import useFlow from "@/service/useFlow";
 import FlowInputField from "../input/FlowInputField";
 
-function CodeEditorNode({ data }: NodeProps) {
+function CmpOperatorNode({ data }: NodeProps) {
   const { setEditedNodeId } = useFlow();
   const currentNodes: Node[] = useNodes();
   const nodeId: string | null = useNodeId();
@@ -25,7 +25,7 @@ function CodeEditorNode({ data }: NodeProps) {
         nds
           .filter((node: Node) => node.id === nodeId)
           .map((node: Node) => {
-            node.type = "codeEditor";
+            node.type = "cmp";
             return node;
           })
       );
@@ -57,4 +57,4 @@ function CodeEditorNode({ data }: NodeProps) {
   );
 }
 
-export default memo(CodeEditorNode);
+export default memo(CmpOperatorNode);

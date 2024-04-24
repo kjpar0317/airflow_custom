@@ -1,18 +1,20 @@
 import type { ReactElement, FormEvent } from "react";
 
 import { useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { PiCircuitry } from "react-icons/pi";
 
+import { cn } from "@/util/comm_util";
 import usePrefersReducedMotion from "@/hook/usePrefersReducedMotion";
 import useLayout from "@/service/useLayout";
 
 export default function Header(): ReactElement {
   const router = useRouter();
+  const pathName = usePathname();
   const container = useRef(null);
-  const layout = useLayout();
+  const { setTheme, doAnimatePageOut } = useLayout();
   const prefersReducedMotion = usePrefersReducedMotion();
 
   gsap.registerPlugin(useGSAP);
@@ -42,19 +44,19 @@ export default function Header(): ReactElement {
   const handleToggleTheme = useCallback(
     (e: FormEvent<HTMLInputElement>) => {
       if (!e.currentTarget?.checked) {
-        layout.setTheme("light");
+        setTheme("light");
       } else {
-        layout.setTheme("dark");
+        setTheme("dark");
       }
     },
-    [layout]
+    [setTheme]
   );
 
   const handleLink = useCallback(
     (url: string) => {
-      layout.doAnimatePageOut("#transition-element", url, router);
+      doAnimatePageOut("#transition-element", url, router);
     },
-    [layout, router]
+    [doAnimatePageOut, router]
   );
 
   return (
@@ -79,16 +81,26 @@ export default function Header(): ReactElement {
       <nav className="nav font-semibold text-lg w-full pl-4">
         <ul className="flex items-center">
           <li
-            className="p-4 border-b-2 border-primary border-opacity-0 hover:border-opacity-100 hover:text-primary duration-200 cursor-pointer text-sm active"
+            className={cn(
+              "p-4 border-b-2 border-primary hover:border-opacity-100 hover:text-primary duration-200 cursor-pointer text-sm",
+              pathName === "/" || pathName === ""
+                ? "border-b-green-700 active"
+                : "border-opacity-0"
+            )}
             onClick={() => handleLink("/")}
           >
             <a href="#home">DAG TASK</a>
           </li>
           <li
-            className="p-4 border-b-2 border-primary border-opacity-0 hover:border-opacity-100 hover:text-primary duration-200 cursor-pointer text-sm active"
-            onClick={() => handleLink("/test")}
+            className={cn(
+              "p-4 border-b-2 border-primary  hover:border-opacity-100 hover:text-primary duration-200 cursor-pointer text-sm",
+              pathName === "/daglist"
+                ? "border-b-green-700 active"
+                : "border-opacity-0"
+            )}
+            onClick={() => handleLink("/daglist")}
           >
-            <a href="#test">TEST</a>
+            <a href="#test">DAG LIST</a>
           </li>
         </ul>
       </nav>

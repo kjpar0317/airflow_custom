@@ -19,27 +19,27 @@ export default function FlowSidebar({
   return (
     <aside className={cn(className, "flex pt-3")}>
       <ul>
-        {/* <li
+        <li
           className="dndnode input text-xs md:text-sm"
-          onDragStart={(event: DragEvent) => onDragStart(event, "custom")}
+          onDragStart={(event: DragEvent) => onDragStart(event, "cmp")}
+          draggable
+        >
+          Cmp Operator
+        </li>
+        <li
+          className="dndnode input text-xs md:text-sm"
+          onDragStart={(event: DragEvent) => onDragStart(event, "codeEditor")}
           draggable
         >
           SQL Operator
-        </li> */}
+        </li>
         <li
           className="dndnode input text-xs md:text-sm"
-          onDragStart={(event: DragEvent) => onDragStart(event, "custom")}
+          onDragStart={(event: DragEvent) => onDragStart(event, "codeEditor")}
           draggable
         >
           Http Operator
         </li>
-        {/* <li
-          className="dndnode input text-xs md:text-sm"
-          onDragStart={(event: DragEvent) => onDragStart(event, "custom")}
-          draggable
-        >
-          Python Operator
-        </li> */}
         <li
           className="dndnode input text-xs md:text-sm"
           onDragStart={(event: DragEvent) => onDragStart(event, "branch")}

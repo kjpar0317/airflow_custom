@@ -1,26 +1,36 @@
 "use client";
 
-import type { IColDef, TData, TSizeColumn } from "@/type/aggrid";
+import type { IColDef, TSizeColumn } from "@/type/aggrid";
 
 import { useState, useEffect, useRef, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
-import FlowGridDetail from "@/components/features/flows/FlowGridDetail";
+import useAirflow from "@/service/useAirflow";
 
-export default function DagTask() {
+export default function DagList() {
+  const { dagList } = useAirflow();
   const [rowData, setRowData] = useState<IAirflowDag[]>();
-  const [gridRow, setGridRow] = useState<IAirflowDag>();
-  const [open, setOpen] = useState<boolean>(false);
-  const [mode, setMode] = useState<string>("EDIT");
   const container = useRef(null);
   const columnDefs = useMemo(
     () => [
       { headerName: "DAG ID", field: "dag_id" },
-      { headerName: "DAG 명", field: "dag_name" },
-      { headerName: "생성자", field: "creator" },
-      { headerName: "생성일", field: "create_dt", sort: "desc" },
+      { headerName: "파일위치", field: "fileloc", width: 350 },
+      {
+        headerName: "실행시간",
+        field: "last_parsed_time",
+        width: 270,
+        sort: "desc",
+      },
+      { headerName: "다음DAG", field: "next_dagrun" },
+      { headerName: "DAG 에러", field: "has_import_errors", width: 80 },
+      { headerName: "활성화", field: "is_active", width: 80 },
+      { headerName: "정지", field: "is_paused", width: 80 },
+      {
+        headerName: "타임테이블",
+        field: "timetable_description",
+      },
     ],
     []
   ) as IColDef[];
@@ -41,8 +51,8 @@ export default function DagTask() {
   gsap.registerPlugin(useGSAP);
 
   useEffect(() => {
-    getAirflowDag();
-  }, []);
+    dagList && setRowData(dagList.dags);
+  }, [dagList]);
 
   useGSAP(
     () => {
@@ -63,35 +73,9 @@ export default function DagTask() {
     { scope: container }
   );
 
-  async function getAirflowDag() {
-    const data = await fetch(`/api/flows/dag`);
-    const response = await data.json();
-    setRowData(response);
-  }
-
-  function handleGridClick(grid: TData) {
-    setGridRow(grid.data);
-    setMode("EDIT");
-    setOpen(true);
-  }
-
-  function handleOpen() {
-    setGridRow(undefined);
-    setMode("ADD");
-    setOpen(true);
-  }
-  function handleClose(redraw: boolean) {
-    redraw && getAirflowDag();
-    setOpen(false);
-  }
-
   return (
     <div className="w-11/12 h-full content-center">
-      <div className="flex justify-end w-full mb-2">
-        <button className="btn btn-primary btn-sm" onClick={handleOpen}>
-          추가
-        </button>
-      </div>
+      <div className="flex justify-end w-full mb-2"></div>
       <div className="drawer drawer-end contents w-full">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
         <div ref={container} className="ag-theme-alpine w-full h-[650px]">
@@ -104,16 +88,8 @@ export default function DagTask() {
             columnDefs={columnDefs}
             autoSizeStrategy={autoSizeStrategy}
             className="w-full h-full"
-            onRowClicked={handleGridClick}
           ></AgGridReact>
         </div>
-        <FlowGridDetail
-          key={`${open}`}
-          open={open}
-          mode={mode}
-          row={gridRow}
-          onClose={handleClose}
-        />
       </div>
     </div>
   );

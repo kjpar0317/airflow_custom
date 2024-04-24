@@ -24,6 +24,7 @@ interface IGsapModal {
 }
 
 export interface IGsapModalOut {
+  modalSaveClose: () => void;
   modalClose: () => void;
 }
 
@@ -49,11 +50,16 @@ const GsapModal = forwardRef(function GsapModal(
     () => {
       return {
         modalClose() {
-          modalTimeline.reverse();
+          modalTimeline.reverse(1500);
+        },
+        async modalSaveClose() {
+          modalTimeline.reverse(1500);
+          await sleep(1500);
+          onClose?.();
         },
       };
     },
-    [modalTimeline]
+    [modalTimeline, onClose]
   );
 
   useEffect(() => {
@@ -109,7 +115,7 @@ const GsapModal = forwardRef(function GsapModal(
   }, [onDelete]);
 
   const handleClose = useCallback(async () => {
-    modalTimeline.reverse();
+    modalTimeline.reverse(1500);
     await sleep(1500);
     onClose?.();
   }, [modalTimeline, onClose]);

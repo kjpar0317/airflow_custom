@@ -4,12 +4,19 @@ import type {
   IRowNode,
   GridApi,
   ColumnApi,
+  SizeColumnsToFitGridStrategy,
+  SizeColumnsToFitProvidedWidthStrategy,
+  SizeColumnsToContentStrategy,
 } from "ag-grid-community";
 
 export type TData = any;
 export type TContext = any;
 export type RowPinnedType = "top" | "bottom" | null | undefined;
 export type TContextInAction = any;
+export type TSizeColumn =
+  | SizeColumnsToFitGridStrategy
+  | SizeColumnsToFitProvidedWidthStrategy
+  | SizeColumnsToContentStrategy;
 
 export interface IGridApi extends GridApi {}
 export interface IColDef extends ColDef {}

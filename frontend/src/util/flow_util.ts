@@ -130,6 +130,7 @@ export class FlowUtil {
       // 으아 어렵다
       if (target_nodes?.type === "branch") {
         const branch_pipeline: string =
+          current_pipeline +
           DIVID_PIPELINE +
           "[" +
           next_edges[0].target +

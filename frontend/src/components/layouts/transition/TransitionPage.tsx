@@ -5,11 +5,11 @@ import { useEffect } from "react";
 import useLayout from "@/service/useLayout";
 
 export default function TransitionPage() {
-  const layout = useLayout();
+  const { doAnimatePageIn } = useLayout();
 
   useEffect(() => {
-    layout.doAnimatePageIn("#transition-element");
-  }, [layout]);
+    doAnimatePageIn("#transition-element");
+  }, [doAnimatePageIn]);
 
   return (
     <div

@@ -8,33 +8,28 @@ import useFlow from "@/service/useFlow";
 import InputSimpleField from "@/components/ui/forms/fields/InputSimpleField";
 
 export default function FlowDrawer(): ReactElement {
-  const flow = useFlow();
+  const { currentNode, getChildNodes } = useFlow();
   const nodes: Node[] = useNodes();
   const edges: Edge[] = useEdges();
-  const childNodes = useMemo(
-    () =>
-      flow.cloneNodes && flow.cloneNodes.length > 0 ? flow.cloneNodes : nodes,
-    [flow.cloneNodes, nodes]
-  );
 
   const trueChild: Node | undefined = useMemo(
     () =>
-      flow
-        .getChildNodes(childNodes, edges)
-        ?.find((node: Node) => node.data.type === "bottom"),
-    [flow, childNodes, edges]
+      getChildNodes(nodes, edges)?.find(
+        (node: Node) => node.data.type === "bottom"
+      ),
+    [getChildNodes, nodes, edges]
   );
   const falseChild: Node | undefined = useMemo(
     () =>
-      flow
-        .getChildNodes(childNodes, edges)
-        ?.find((node: Node) => node.data.type === "right"),
-    [flow, childNodes, edges]
+      getChildNodes(nodes, edges)?.find(
+        (node: Node) => node.data.type === "right"
+      ),
+    [getChildNodes, nodes, edges]
   );
 
   return (
     <>
-      {flow.currentNode?.type === "branch" && (
+      {currentNode?.type === "branch" && (
         <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
           <li>
             <InputSimpleField
@@ -56,20 +51,20 @@ export default function FlowDrawer(): ReactElement {
           </li>
         </ul>
       )}
-      {flow.currentNode?.type === "custom" && (
+      {currentNode?.type === "custom" && (
         <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
           <li>
-            <a>{flow.currentNode?.id}</a>
+            <a>{currentNode?.id}</a>
           </li>
           <li>
             <a>Sidebar Item 2</a>
           </li>
         </ul>
       )}
-      {flow.currentNode?.type === "codeEditor" && (
+      {currentNode?.type === "codeEditor" && (
         <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
           <li>
-            <a>{flow.currentNode?.id}</a>
+            <a>{currentNode?.id}</a>
           </li>
           <li>
             <a>Sidebar Item 2</a>

@@ -12,6 +12,7 @@ interface IMonacoEditor {
 
 export interface IMonacoEditorOut {
   editText: string | undefined;
+  setEditText: (text: string) => void;
   clear: () => void;
 }
 
@@ -27,6 +28,7 @@ export const MonacoEditor = forwardRef(function MonacoEditor(
     () => {
       return {
         editText,
+        setEditText,
         clear() {
           setEditText("");
         },
@@ -42,7 +44,7 @@ export const MonacoEditor = forwardRef(function MonacoEditor(
   return (
     <div className={className}>
       <Editor
-        height="90vh"
+        // height="90vh"
         defaultLanguage="python"
         defaultValue={text}
         value={editText}

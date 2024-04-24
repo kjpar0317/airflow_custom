@@ -1,35 +1,37 @@
 import type { Node } from "reactflow";
 
 import { useCallback, memo } from "react";
-import { Handle, Position, NodeResizer, useNodeId, useNodes } from "reactflow";
+import {
+  Handle,
+  Position,
+  NodeResizer,
+  useNodeId,
+  useNodes,
+  useNodesState,
+} from "reactflow";
 
 import useFlow from "@/service/useFlow";
 import FlowInputField from "../input/FlowInputField";
 
 function TextNode({ data }: any) {
-  const flow = useFlow();
-  const nodes: Node[] = useNodes();
+  const { setEditedNodeId } = useFlow();
+  const currentNodes: Node[] = useNodes();
   const nodeId: string | null = useNodeId();
+  const [, setNodes] = useNodesState(currentNodes);
 
   const handleClickNode = useCallback(() => {
-    console.log(nodeId);
     if (nodeId) {
-      const targetNodes: Node[] =
-        flow.cloneNodes && flow.cloneNodes.length > 0 ? flow.cloneNodes : nodes;
-
-      const convNodes = targetNodes
-        .filter((node: Node) => node.id === nodeId)
-        .map((node: Node) => {
-          node.data = {
-            ...node.data,
-            target: "codeEditor",
-          };
-          return node;
-        })[0];
-
-      flow.setCurrentNode(convNodes);
+      setEditedNodeId(nodeId);
+      setNodes((nds: Node[]) =>
+        nds
+          .filter((node: Node) => node.id === nodeId)
+          .map((node: Node) => {
+            node.type = "text";
+            return node;
+          })
+      );
     }
-  }, [flow, nodeId, nodes]);
+  }, [nodeId, setEditedNodeId, setNodes]);
 
   return (
     <>
