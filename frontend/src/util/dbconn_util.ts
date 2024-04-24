@@ -12,7 +12,7 @@ import mariadb from "mariadb";
 const connection = mariadb.createPool({
   host: "localhost",
   user: "coininfos",
-  password: "coininfos",
+  password: "kocodebank",
   database: "coininfos",
 });
 
