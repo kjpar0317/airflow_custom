@@ -10,9 +10,9 @@ import mariadb from "mariadb";
 // });
 
 const connection = mariadb.createPool({
-  host: "localhost",
+  host: "127.0.0.1",
   user: "coininfos",
-  password: "kocodebank",
+  password: "coininfos",
   database: "coininfos",
 });
 
