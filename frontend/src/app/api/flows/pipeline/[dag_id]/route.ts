@@ -16,6 +16,7 @@ export const GET = async (
     return NextResponse.json(result);
   } catch (error: any) {
     console.log(error);
+    return NextResponse.error();
   }
 };
 
@@ -42,5 +43,6 @@ export const PUT = async (
     return NextResponse.json("OK");
   } catch (error: any) {
     console.log(error);
+    return NextResponse.error();
   }
 };

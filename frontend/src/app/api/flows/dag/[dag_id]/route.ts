@@ -30,6 +30,7 @@ export const PUT = async (
     return NextResponse.json(result);
   } catch (error: any) {
     console.log(error);
+    return NextResponse.error();
   }
 };
 
@@ -49,5 +50,6 @@ export const DELETE = async (
     return NextResponse.json({});
   } catch (error: any) {
     console.log(error);
+    return NextResponse.error();
   }
 };

@@ -14,6 +14,7 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json(result);
   } catch (error: any) {
     console.log(error);
+    return NextResponse.error();
   }
 };
 
@@ -33,5 +34,6 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(result);
   } catch (error: any) {
     console.log(error);
+    return NextResponse.error();
   }
 };

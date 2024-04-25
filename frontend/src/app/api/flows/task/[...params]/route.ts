@@ -21,5 +21,6 @@ export const GET = async (req: NextRequest, { params }: { params: any }) => {
     }
   } catch (error: any) {
     console.log(error);
+    return NextResponse.error();
   }
 };

@@ -6,11 +6,12 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
+import { toast } from "react-toastify";
 
 import useAirflow from "@/service/useAirflow";
 
 export default function DagList() {
-  const { dagList } = useAirflow();
+  const { dagList, importError } = useAirflow();
   const [rowData, setRowData] = useState<IAirflowDag[]>();
   const container = useRef(null);
   const columnDefs = useMemo(
@@ -38,12 +39,6 @@ export default function DagList() {
     () => ({
       type: "fitGridWidth",
       defaultMinWidth: 100,
-      columnLimits: [
-        {
-          colId: "country",
-          minWidth: 900,
-        },
-      ],
     }),
     []
   ) as TSizeColumn;
@@ -53,6 +48,12 @@ export default function DagList() {
   useEffect(() => {
     dagList && setRowData(dagList.dags);
   }, [dagList]);
+
+  useEffect(() => {
+    importError?.import_errors?.forEach((error: IImportError) =>
+      toast.error(error.filename + ":" + error.stack_trace)
+    );
+  }, [importError]);
 
   useGSAP(
     () => {

@@ -5,6 +5,8 @@ import type { ReactElement, Ref } from "react";
 import { useState, useImperativeHandle, forwardRef } from "react";
 import Editor, { useMonaco } from "@monaco-editor/react";
 
+import useLayout from "@/service/useLayout";
+
 interface IMonacoEditor {
   className?: string;
   text?: string;
@@ -20,6 +22,7 @@ export const MonacoEditor = forwardRef(function MonacoEditor(
   { className = "w-[500px]", text }: IMonacoEditor,
   ref: Ref<IMonacoEditorOut>
 ): ReactElement {
+  const { theme } = useLayout();
   // const monaco = useMonaco();
   const [editText, setEditText] = useState("");
 
@@ -45,6 +48,7 @@ export const MonacoEditor = forwardRef(function MonacoEditor(
     <div className={className}>
       <Editor
         // height="90vh"
+        theme={theme === "light" ? theme : "vs-dark"}
         defaultLanguage="python"
         defaultValue={text}
         value={editText}

@@ -1,4 +1,4 @@
-import { encode } from "base-64";
+import { encode } from "js-base64";
 
 // 이것 저것 해보자..
 export async function getTabclouditFetch(url: string) {

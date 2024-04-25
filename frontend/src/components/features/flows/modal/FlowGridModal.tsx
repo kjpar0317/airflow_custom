@@ -227,6 +227,14 @@ export default function FlowGridModal({
 
     if (!(await trigger())) return;
 
+    const taskList = cleanedPreservedEditTasks(nodes);
+    const noCodeTask = taskList?.find((task: IAirflowTask) => !task.code);
+
+    if (noCodeTask) {
+      toast.warn(`task: ${noCodeTask.task_id} 에 코드가 없습니다.`);
+      return;
+    }
+
     // DAG 저장
     if (mode === "EDIT") {
       await fetch(`/api/flows/dag/${data?.dag_id}`, {
@@ -253,7 +261,7 @@ export default function FlowGridModal({
       // TASK (예약된) list 저장
       await fetch("/api/flows/task/list", {
         method: "POST",
-        body: JSON.stringify(cleanedPreservedEditTasks(nodes)),
+        body: JSON.stringify(taskList),
       });
     } else {
       const newTasks: IAirflowTask[] = nodes
@@ -308,7 +316,7 @@ export default function FlowGridModal({
     <GsapModal
       id="modal1"
       open={open}
-      className="min-w-[450px] w-full lg:w-[1200px] h-[750px]"
+      className="min-w-[450px] w-full lg:w-[1200px] h-[700px]"
       onTest={handleTest}
       onSave={handleSave}
       onDelete={handleDelete}

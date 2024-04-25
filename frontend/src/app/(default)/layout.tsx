@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { ReactFlowProvider } from "reactflow";
 import { ToastContainer } from "react-toastify";
+import { SWRConfig } from "swr";
 
 import useLayout from "@/service/useLayout";
 import Header from "@/components/layouts/common/Header";
@@ -37,7 +38,14 @@ export default function DefaultLayout({
     <div data-theme={theme} className="w-full h-full bg-base-200">
       <Header />
       <main className="flex flex-col justify-between items-center w-full h-[calc(100vh_-_63px)]">
-        <ReactFlowProvider>{children}</ReactFlowProvider>
+        <SWRConfig
+          value={{
+            revalidateOnFocus: false,
+            revalidateIfStale: false,
+          }}
+        >
+          <ReactFlowProvider>{children}</ReactFlowProvider>
+        </SWRConfig>
       </main>
       <ToastContainer />
       <TransitionPage />

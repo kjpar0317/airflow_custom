@@ -28,12 +28,6 @@ export default function DagTask() {
     () => ({
       type: "fitGridWidth",
       defaultMinWidth: 100,
-      columnLimits: [
-        {
-          colId: "country",
-          minWidth: 900,
-        },
-      ],
     }),
     []
   ) as TSizeColumn;

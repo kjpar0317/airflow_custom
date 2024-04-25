@@ -28,5 +28,6 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json("OK");
   } catch (error: any) {
     console.log(error);
+    return NextResponse.error();
   }
 };

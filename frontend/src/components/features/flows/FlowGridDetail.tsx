@@ -31,6 +31,8 @@ def ${task_id.replace(
   ""
 )}(session: Session, http: CmpHttpHook, params: Dict[str, Any]):
   """
+  !! 함수명은 바꾸지 마세요. !!
+
   변수 사용법 예시
   dag_id = params['dag_id']
   쿼리 사용법 예시
@@ -48,7 +50,6 @@ def ${task_id.replace(
 )}(session: Session, http: CmpHttpHook, params: Dict[str, Any]):
     """
     !! 함수명은 바꾸지 마세요. !!
-
     !! 원하는 분기 task명(string) 리턴 !!
 
     변수 사용법 예시 (restapi 시 보낸 파라메터)
@@ -96,24 +97,35 @@ export default function FlowGridDetail({
       );
       const currentNode = nodes.find((node: Node) => node.id === editedNodeId);
 
-      editorRef.current?.setEditText(
-        editTask?.code ?? currentNode?.type === "branch"
-          ? (preservedEditTasks &&
-              getBranchTemplate(currentNode?.data.label)) ||
-              ""
-          : getTemplate(task_id)
-      );
+      if (editTask?.code) {
+        editorRef.current?.setEditText(editTask.code);
+      } else {
+        editorRef.current?.setEditText(
+          currentNode?.type === "branch"
+            ? (preservedEditTasks &&
+                getBranchTemplate(currentNode?.data.label)) ||
+                ""
+            : getTemplate(task_id)
+        );
+      }
     },
     [editedNodeId, nodes, preservedEditTasks]
   );
 
   useEffect(() => {
     const dagId = row?.dag_id ?? editDagId;
+    const firstPreservedEditTaskDagId = preservedEditTasks
+      ? preservedEditTasks[0].dag_id
+      : null;
 
-    if (dagId && !preservedEditTasks) {
+    if (
+      open &&
+      dagId &&
+      (firstPreservedEditTaskDagId !== dagId || !preservedEditTasks)
+    ) {
       fetchLoadData(dagId);
     }
-  }, [preservedEditTasks, fetchLoadData, row?.dag_id, editDagId]);
+  }, [preservedEditTasks, fetchLoadData, row?.dag_id, editDagId, open]);
 
   useEffect(() => {
     const dagId = row?.dag_id ?? editDagId;
@@ -192,7 +204,10 @@ export default function FlowGridDetail({
         onSave={handleEditorSave}
         onClose={handleEditorClose}
       >
-        <MonacoEditor ref={editorRef} className="md:w-[1024px] h-[768px]" />
+        <MonacoEditor
+          ref={editorRef}
+          className="md:w-[800px] w-full h-[690px]"
+        />
       </GsapModal>
     </>
   );

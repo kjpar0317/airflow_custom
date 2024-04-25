@@ -5,6 +5,7 @@ import type { Node } from "reactflow";
 
 import { useState, useCallback, useMemo } from "react";
 import { useNodes, useNodeId, useNodesState } from "reactflow";
+import { toast } from "react-toastify";
 
 import useAirflow from "@/service/useAirflow";
 
@@ -20,7 +21,7 @@ export default function FlowInputField({
   const currentNodes: Node[] = useNodes();
   const nodeId: string | null = useNodeId();
   const [, setNodes] = useNodesState(currentNodes);
-  const { setMoveTaskCodeByChangeTaskId } = useAirflow();
+  const { setMoveTaskCodeByChangeTaskId, validEditTask } = useAirflow();
   const currentNode = useMemo(
     () => currentNodes.find((node: Node) => node.id === nodeId),
     [currentNodes, nodeId]
@@ -31,9 +32,12 @@ export default function FlowInputField({
       if (e.currentTarget) {
         const targetValue = e.currentTarget.value;
 
-        setValue(targetValue);
-        setMoveTaskCodeByChangeTaskId(currentNode?.data.label, targetValue);
+        if (!validEditTask(targetValue)) {
+          toast.warn(`task_id: ${targetValue}이 겹칩니다.`);
+          return;
+        }
 
+        setValue(targetValue);
         setNodes((nds: Node[]) =>
           nds
             .filter((node: Node) => node.id === nodeId)
@@ -42,9 +46,16 @@ export default function FlowInputField({
               return node;
             })
         );
+        setMoveTaskCodeByChangeTaskId(currentNode?.data.label, targetValue);
       }
     },
-    [currentNode?.data.label, nodeId, setMoveTaskCodeByChangeTaskId, setNodes]
+    [
+      currentNode?.data.label,
+      nodeId,
+      setMoveTaskCodeByChangeTaskId,
+      setNodes,
+      validEditTask,
+    ]
   );
 
   return (
