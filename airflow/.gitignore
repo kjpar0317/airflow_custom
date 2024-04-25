@@ -1,0 +1,15 @@
+logs/
+postgres/
+db/
+
+__pycache__/
+*.py[cod]
+__pypackages__/
+
+*.pid
+*.out
+*.err
+
+custom/dags/
+custom/logs/
+custom/plugins/
