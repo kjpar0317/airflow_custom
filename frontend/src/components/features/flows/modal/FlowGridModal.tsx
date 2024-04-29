@@ -86,6 +86,7 @@ export default function FlowGridModal({
     preservedEditTasks,
     setEditDagId,
     setPreservedEditTasks,
+    delEditTask,
     cleanedPreservedEditTasks,
   } = useAirflow();
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
@@ -153,6 +154,8 @@ export default function FlowGridModal({
           const outgoers = getOutgoers(node, nodes, edges);
           const connectedEdges = getConnectedEdges([node], edges);
 
+          delEditTask(node.data.label);
+
           const remainingEdges = acc.filter(
             (edge: Edge) => !connectedEdges.includes(edge)
           );
@@ -169,7 +172,7 @@ export default function FlowGridModal({
         }, edges)
       );
     },
-    [setEdges, edges, nodes]
+    [setEdges, edges, nodes, delEditTask]
   );
 
   const onDragOver = useCallback((event: DragEvent) => {

@@ -109,6 +109,23 @@ export default function useAirflow() {
     [preservedEditTasksMutate]
   );
 
+  const delEditTask = useCallback(
+    (taskId: string) => {
+      if (_preservedEditTasks) {
+        const taskIndex = _preservedEditTasks.findIndex(
+          (existTask) => existTask.task_id === taskId
+        );
+
+        if (taskIndex >= 0) {
+          _preservedEditTasks.splice(taskIndex, 1);
+        }
+      }
+
+      preservedEditTasksMutate();
+    },
+    [preservedEditTasksMutate]
+  );
+
   const validEditTask = useCallback((newTaskId: string) => {
     const existNode = _preservedEditTasks?.find(
       (task: IAirflowTask) => task.task_id === newTaskId
@@ -174,6 +191,7 @@ export default function useAirflow() {
     setPreservedEditTasks,
     setMoveTaskCodeByChangeTaskId,
     setEditTask,
+    delEditTask,
     setErrorDagId,
     validEditTask,
     cleanedPreservedEditTasks,
