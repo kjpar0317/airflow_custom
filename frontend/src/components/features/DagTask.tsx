@@ -7,14 +7,24 @@ import { AgGridReact } from "ag-grid-react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 
+import useAirflow from "@/service/useAirflow";
+import DagImportError from "./airflow/DagImportError";
 import FlowGridDetail from "@/components/features/flows/FlowGridDetail";
+import {
+  MonacoEditor,
+  IMonacoEditorOut,
+} from "@/components/editor/MonacoEditor";
+import GsapModal from "../modal/GsapModal";
 
 export default function DagTask() {
+  const { dagCode, setErrorDagId } = useAirflow();
   const [rowData, setRowData] = useState<IAirflowDag[]>();
   const [gridRow, setGridRow] = useState<IAirflowDag>();
   const [open, setOpen] = useState<boolean>(false);
+  const [isEditorOpen, setIsEditorOpen] = useState<boolean>(false);
   const [mode, setMode] = useState<string>("EDIT");
   const container = useRef(null);
+  const editorRef = useRef<IMonacoEditorOut>(null);
   const columnDefs = useMemo(
     () => [
       { headerName: "DAG ID", field: "dag_id" },
@@ -37,6 +47,13 @@ export default function DagTask() {
   useEffect(() => {
     getAirflowDag();
   }, []);
+
+  useEffect(() => {
+    if (dagCode) {
+      editorRef.current?.setEditText(dagCode);
+      setIsEditorOpen(true);
+    }
+  }, [dagCode]);
 
   useGSAP(
     () => {
@@ -78,9 +95,14 @@ export default function DagTask() {
     redraw && getAirflowDag();
     setOpen(false);
   }
+  function handleEditorClose() {
+    setErrorDagId(null);
+    setIsEditorOpen(false);
+  }
 
   return (
     <div className="w-11/12 h-full content-center">
+      <DagImportError />
       <div className="flex justify-end w-full mb-2">
         <button className="btn btn-primary btn-sm" onClick={handleOpen}>
           추가
@@ -109,6 +131,17 @@ export default function DagTask() {
           onClose={handleClose}
         />
       </div>
+      <GsapModal
+        id="dag_code_modal"
+        open={isEditorOpen}
+        onClose={handleEditorClose}
+      >
+        <MonacoEditor
+          ref={editorRef}
+          readOnly
+          className="md:w-[800px] w-screen h-[690px]"
+        />
+      </GsapModal>
     </div>
   );
 }

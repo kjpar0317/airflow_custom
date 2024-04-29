@@ -102,9 +102,7 @@ export default function FlowGridDetail({
       } else {
         editorRef.current?.setEditText(
           currentNode?.type === "branch"
-            ? (preservedEditTasks &&
-                getBranchTemplate(currentNode?.data.label)) ||
-                ""
+            ? getBranchTemplate(currentNode?.data.label)
             : getTemplate(task_id)
         );
       }
@@ -206,7 +204,7 @@ export default function FlowGridDetail({
       >
         <MonacoEditor
           ref={editorRef}
-          className="md:w-[800px] w-full h-[690px]"
+          className="md:w-[800px] w-screen h-[690px]"
         />
       </GsapModal>
     </>

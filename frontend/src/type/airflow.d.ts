@@ -23,7 +23,7 @@ interface IAirflowPipeline {
   creator?: string;
 }
 
-interface IImportError {
+interface IAirflowImportError {
   filename: string;
   import_error_id: number;
   stack_trace: string;
@@ -31,6 +31,6 @@ interface IImportError {
 }
 
 interface IAirflowImportErrorCollection {
-  import_errors: IImportError[];
+  import_errors: IAirflowImportError[];
   total_entries: number;
 }

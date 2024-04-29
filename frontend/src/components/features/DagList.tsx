@@ -6,12 +6,12 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
-import { toast } from "react-toastify";
 
 import useAirflow from "@/service/useAirflow";
+import DagImportError from "./airflow/DagImportError";
 
 export default function DagList() {
-  const { dagList, importError } = useAirflow();
+  const { dagList } = useAirflow();
   const [rowData, setRowData] = useState<IAirflowDag[]>();
   const container = useRef(null);
   const columnDefs = useMemo(
@@ -49,12 +49,6 @@ export default function DagList() {
     dagList && setRowData(dagList.dags);
   }, [dagList]);
 
-  useEffect(() => {
-    importError?.import_errors?.forEach((error: IImportError) =>
-      toast.error(error.filename + ":" + error.stack_trace)
-    );
-  }, [importError]);
-
   useGSAP(
     () => {
       let timeline = gsap.timeline({});
@@ -76,7 +70,9 @@ export default function DagList() {
 
   return (
     <div className="w-11/12 h-full content-center">
-      <div className="flex justify-end w-full mb-2"></div>
+      <div className="flex justify-end w-full mb-2">
+        <DagImportError />
+      </div>
       <div className="drawer drawer-end contents w-full">
         <input id="my-drawer-4" type="checkbox" className="drawer-toggle" />
         <div ref={container} className="ag-theme-alpine w-full h-[650px]">

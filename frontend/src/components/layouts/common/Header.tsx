@@ -72,13 +72,13 @@ export default function Header(): ReactElement {
               <PiCircuitry color="#22C55E" size="30" />
             </a>
           </div>
-          <div className="text-left items-end h-[35px] content-center">
+          <div className="text-left items-end h-[35px] content-center hidden md:flex pb-2">
             DEMO SITE
           </div>
         </div>
       </h1>
 
-      <nav className="nav font-semibold text-lg w-full pl-4">
+      <nav className="nav font-semibold text-md md:text-lg w-full pl-4">
         <ul className="flex items-center">
           <li
             className={cn(

@@ -4,14 +4,19 @@ import { useCallback } from "react";
 import useSWR from "swr";
 import { includes, isEmpty } from "lodash-es";
 
-import { getAirflowFetch } from "@/util/fetch_util";
+import { getAirflowFetch, getTabclouditTextFetch } from "@/util/fetch_util";
 
+let _errorDagId: string | null;
 let _editDagId: string | null;
 let _preservedEditTasks: IAirflowTask[] | null;
 
 const PYTHON_START_TASK_CODE = "def ";
 
 export default function useAirflow() {
+  const { data: errorDagId, mutate: errorDagIdMutate } = useSWR<string | null>(
+    "errorDagId",
+    () => _errorDagId
+  );
   const { data: editDagId, mutate: editDagIdMutate } = useSWR<string | null>(
     "editDagId",
     () => _editDagId
@@ -29,6 +34,20 @@ export default function useAirflow() {
     {
       refreshInterval: 5000, // 5초 마다 갱신
     }
+  );
+  const { data: dagCode } = useSWR(
+    `dag_id_${_errorDagId}`,
+    () =>
+      _errorDagId &&
+      getTabclouditTextFetch(`/cmp-api/airflow/dag/code?dagId=${_errorDagId}`)
+  );
+
+  const setErrorDagId = useCallback(
+    (errorDagId: string | null) => {
+      _errorDagId = errorDagId;
+      return errorDagIdMutate();
+    },
+    [errorDagIdMutate]
   );
 
   const setEditDagId = useCallback(
@@ -147,12 +166,15 @@ export default function useAirflow() {
   return {
     dagList,
     importError,
+    dagCode,
+    errorDagId,
     editDagId,
     preservedEditTasks,
     setEditDagId,
     setPreservedEditTasks,
     setMoveTaskCodeByChangeTaskId,
     setEditTask,
+    setErrorDagId,
     validEditTask,
     cleanedPreservedEditTasks,
   };

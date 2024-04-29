@@ -10,6 +10,7 @@ import useLayout from "@/service/useLayout";
 interface IMonacoEditor {
   className?: string;
   text?: string;
+  readOnly?: boolean;
 }
 
 export interface IMonacoEditorOut {
@@ -19,7 +20,7 @@ export interface IMonacoEditorOut {
 }
 
 export const MonacoEditor = forwardRef(function MonacoEditor(
-  { className = "w-[500px]", text }: IMonacoEditor,
+  { className = "w-[500px]", text, readOnly }: IMonacoEditor,
   ref: Ref<IMonacoEditorOut>
 ): ReactElement {
   const { theme } = useLayout();
@@ -52,6 +53,7 @@ export const MonacoEditor = forwardRef(function MonacoEditor(
         defaultLanguage="python"
         defaultValue={text}
         value={editText}
+        options={{ readOnly: readOnly }}
         onChange={handleChange}
       />
     </div>
