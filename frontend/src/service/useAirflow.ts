@@ -2,9 +2,14 @@ import type { Node } from "reactflow";
 
 import { useCallback } from "react";
 import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 import { includes, isEmpty } from "lodash-es";
 
-import { getAirflowFetch, getTabclouditTextFetch } from "@/util/fetch_util";
+import {
+  getAirflowFetch,
+  getTabclouditTextFetch,
+  fetchTabcloudit,
+} from "@/util/fetch_util";
 
 let _errorDagId: string | null;
 let _editDagId: string | null;
@@ -40,6 +45,11 @@ export default function useAirflow() {
     () =>
       _errorDagId &&
       getTabclouditTextFetch(`/cmp-api/airflow/dag/code?dagId=${_errorDagId}`)
+  );
+  // swr mutation 예제
+  const { trigger: deleteDagFlow } = useSWRMutation(
+    `/cmp-api/airflow/flow/dag/delete`,
+    (key: string, options: any) => fetchTabcloudit(key, "POST", options)
   );
 
   const setErrorDagId = useCallback(
@@ -187,6 +197,7 @@ export default function useAirflow() {
     errorDagId,
     editDagId,
     preservedEditTasks,
+    deleteDagFlow,
     setEditDagId,
     setPreservedEditTasks,
     setMoveTaskCodeByChangeTaskId,

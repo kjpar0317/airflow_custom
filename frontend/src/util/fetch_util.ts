@@ -1,7 +1,7 @@
 import { encode } from "js-base64";
 
 const CMP_TOKEN =
-  "c3VwZXJhZG1pbiIsImF1ZCI6ImNtcC1jbGllbnQtZnJvbnRlbmQiLCJleHAiOjE3MzkzMzc3NTUsImlhdCI6MTcwNzgwMTc1NSwiaW5mb3MiOnsiZW50TmFtZSI6IuuMgOq1rOq0keyXreyLnCIsInVuaXROYW1lIjoi7KCV67O07ZmU67aA7IScIiwiaXAiOiIxMjcuMC4wLjEiLCJjb250cmFjdCI6IjAxMC0xMjM0LTk5OTkiLCJhY3RpdmUiOiJsb2NhbCIsImFkbWluIjp0cnVlLCJpc1NTT0xvZ2luIjpmYWxzZSwibG9naW5Vc2VyTmFtZSI6Iuq0gOumrOyekCIsImlzT1NNYW5hZ2VyIjp0cnVlLCJsb2dpblRpbWUikiLCJhY3RpdmUiOiJsb2NhbCIsImFkbWluIjp0cnVlLCJpc1NTT0xvZ2luIjpmYWxzZSwibG9naW5Vc2VyTmFtZSI6Iuq0gOumrOyekCIsImlzT1NNYW5hZ2VyIjp0cnVlLCJsb2dpblRpbWUiOjE3MDc4MDE2ODMwMDAsImVudENvZGUiOiJEQUUiLCJ1bml0Q29kZSI6IjAwMiIsImVtYWlsIjoiYWJjQGlubm9ncmlkLmNvbSIsInVzZXJuYW1lIjoic3VwZXJhZG1pbiJ9fQ.pS2QIGU8roPtXHjGEeIr4z_Ir6euVqMYNz6OBJ8TsjViqzR406DEqZKvNI0a9XQzLXwKrJDJS73uT2fe-IfEWg";
+  "1113w213wiaW5mb3MiOnsiZW50TmFtZSI6IuuMgOq1rOq0keyeereW1lIjoi7KCV67O07ZmU67aA7IScIiwirrrr0LTk5OTkiLCJhY3Reeee23DEqZKvNI0a9XQzLXwKrJDJS73uT2fe-IfEWg";
 
 // 이것 저것 해보자..
 export async function getTabclouditFetch(url: string) {
@@ -26,6 +26,31 @@ export async function getTabclouditTextFetch(url: string) {
     },
   })
     .then((res) => res.text())
+    .catch((err) => console.log(err));
+}
+
+// 이건 예제이다.
+export async function fetchTabcloudit(
+  url: string,
+  method: string,
+  { arg }: any = null
+) {
+  let request: RequestInit | undefined = {
+    method: method,
+    headers: {
+      Authorization: `Bearer ${CMP_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+  };
+
+  console.log(arg);
+
+  if (arg) {
+    request.body = JSON.stringify(arg);
+  }
+
+  return fetch(url, request)
+    .then((res) => res.json())
     .catch((err) => console.log(err));
 }
 

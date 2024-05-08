@@ -84,6 +84,7 @@ export default function FlowGridModal({
   const { convertFlowToAirflowPipeline } = useFlow();
   const {
     preservedEditTasks,
+    deleteDagFlow,
     setEditDagId,
     setPreservedEditTasks,
     delEditTask,
@@ -296,9 +297,11 @@ export default function FlowGridModal({
   async function handleDelete() {
     if (!row?.dag_id) return;
 
-    await fetch(`/api/flows/dag/${row?.dag_id}`, {
-      method: "DELETE",
-    });
+    // await fetch(`/api/flows/dag/${row?.dag_id}`, {
+    //   method: "DELETE",
+    // });
+
+    await deleteDagFlow({ dagId: row.dag_id } as any);
 
     toast("삭제를 완료하였습니다.");
 
