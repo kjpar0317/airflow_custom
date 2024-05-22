@@ -43,7 +43,7 @@ export default function DagList() {
     []
   ) as TSizeColumn;
 
-  gsap.registerPlugin(useGSAP);
+  // gsap.registerPlugin(useGSAP);
 
   useEffect(() => {
     dagList && setRowData(dagList.dags);

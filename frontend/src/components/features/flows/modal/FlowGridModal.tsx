@@ -320,7 +320,6 @@ export default function FlowGridModal({
 
   return (
     <GsapModal
-      id="modal1"
       open={open}
       className="min-w-[450px] w-full lg:w-[1200px] h-[700px]"
       onTest={handleTest}

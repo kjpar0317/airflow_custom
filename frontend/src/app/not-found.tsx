@@ -11,7 +11,7 @@ import "@/assets/style/notfound.css";
 export default function Custom404(): ReactElement {
   const container = useRef(null);
 
-  gsap.registerPlugin(useGSAP);
+  // gsap.registerPlugin(useGSAP);
 
   useGSAP(
     () => {

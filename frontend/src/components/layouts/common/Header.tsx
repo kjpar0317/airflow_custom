@@ -17,7 +17,7 @@ export default function Header(): ReactElement {
   const { setTheme, doAnimatePageOut } = useLayout();
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  gsap.registerPlugin(useGSAP);
+  // gsap.registerPlugin(useGSAP);
 
   const { contextSafe } = useGSAP(
     () => {

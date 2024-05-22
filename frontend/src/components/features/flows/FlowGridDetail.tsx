@@ -197,7 +197,6 @@ export default function FlowGridDetail({
       </div>
       <GsapModal
         ref={modalRef}
-        id="edit_modal"
         open={isEditorOpen}
         onSave={handleEditorSave}
         onClose={handleEditorClose}

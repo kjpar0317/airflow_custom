@@ -13,7 +13,7 @@ function DagImportError(): ReactElement {
   const { importError, setErrorDagId } = useAirflow();
   const container = useRef(null);
 
-  gsap.registerPlugin(useGSAP);
+  // gsap.registerPlugin(useGSAP);
 
   const { contextSafe } = useGSAP(
     () => {

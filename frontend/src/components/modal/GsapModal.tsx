@@ -1,5 +1,6 @@
 import {
   useState,
+  useRef,
   useCallback,
   useImperativeHandle,
   forwardRef,
@@ -13,7 +14,6 @@ import { useGSAP } from "@gsap/react";
 import { sleep, cn } from "@/util/comm_util";
 
 interface IGsapModal {
-  id?: string;
   open?: boolean;
   children: ReactNode;
   className?: string;
@@ -30,7 +30,6 @@ export interface IGsapModalOut {
 
 const GsapModal = forwardRef(function GsapModal(
   {
-    id = "modal_overlay",
     open,
     children,
     className,
@@ -44,8 +43,8 @@ const GsapModal = forwardRef(function GsapModal(
   const [modalTimeline, setModalTimeline] = useState<gsap.core.Timeline>(
     gsap.timeline({})
   );
-
-  gsap.registerPlugin(useGSAP);
+  const container = useRef(null);
+  // gsap.registerPlugin(useGSAP);
 
   useImperativeHandle(
     ref,
@@ -68,9 +67,10 @@ const GsapModal = forwardRef(function GsapModal(
     () => {
       if (open) {
         let timeline = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+        const divElem = container.current as any;
 
         timeline
-          .to("#" + id, {
+          .to(divElem, {
             scaleY: 0.01,
             x: 1,
             opacity: 1,
@@ -78,23 +78,23 @@ const GsapModal = forwardRef(function GsapModal(
             duration: 0.4,
             zIndex: 999,
           })
-          .to("#" + id, {
+          .to(divElem, {
             scaleY: 1,
             background: "rgba(255,255,255,0.16)",
             duration: 0.6,
           })
           .to(
-            "#" + id + " #second",
+            divElem.querySelector("#second"),
             { scaleY: 1, opacity: 1, duration: 0.6 },
             "-=0.4"
           )
           .to(
-            "#" + id + " #third",
+            divElem.querySelector("#third"),
             { scaleY: 1, opacity: 1, duration: 0.4 },
             "-=0.2"
           )
           .to(
-            "#" + id + " #fourth",
+            divElem.querySelector("#fourth"),
             {
               background: "rgba(255,255,255,0.3)",
               border: "1px solid rgba(255,255,255,0.3)",
@@ -106,7 +106,7 @@ const GsapModal = forwardRef(function GsapModal(
         setModalTimeline(timeline);
       }
     },
-    { dependencies: [id, open] }
+    { scope: container, dependencies: [open] }
   );
 
   const handleSave = useCallback(() => {
@@ -127,7 +127,7 @@ const GsapModal = forwardRef(function GsapModal(
 
   return (
     <div
-      id={id}
+      ref={container}
       className="bg-primary/80 absolute z-10 left-0 top-0 h-full w-full flex items-center justify-center py-3 px-2 backdrop-blur-sm scale-y-0 -translate-x-full opacity-0 origin-center"
     >
       <div

@@ -42,7 +42,7 @@ export default function DagTask() {
     []
   ) as TSizeColumn;
 
-  gsap.registerPlugin(useGSAP);
+  // gsap.registerPlugin(useGSAP);
 
   useEffect(() => {
     getAirflowDag();
@@ -131,11 +131,7 @@ export default function DagTask() {
           onClose={handleClose}
         />
       </div>
-      <GsapModal
-        id="dag_code_modal"
-        open={isEditorOpen}
-        onClose={handleEditorClose}
-      >
+      <GsapModal open={isEditorOpen} onClose={handleEditorClose}>
         <MonacoEditor
           ref={editorRef}
           readOnly
