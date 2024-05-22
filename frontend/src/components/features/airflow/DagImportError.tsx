@@ -15,7 +15,7 @@ function DagImportError(): ReactElement {
 
   gsap.registerPlugin(useGSAP);
 
-  useGSAP(
+  const { contextSafe } = useGSAP(
     () => {
       if (
         importError?.import_errors &&
@@ -40,7 +40,7 @@ function DagImportError(): ReactElement {
     { scope: container }
   );
 
-  const handleToggle = useCallback((index: number, isOpen: boolean) => {
+  const handleToggle = contextSafe((index: number, isOpen: boolean) => {
     let timeline = gsap.timeline({});
 
     if (!isOpen) {
@@ -56,7 +56,7 @@ function DagImportError(): ReactElement {
         { opacity: 1, height: 45 }
       );
     }
-  }, []);
+  });
 
   const handleViewCode = useCallback(
     (filename: string) => {

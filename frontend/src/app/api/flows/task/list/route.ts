@@ -9,11 +9,11 @@ export const POST = async (req: NextRequest) => {
     const params: IAirflowTask[] = await req.json();
 
     if (params && params.length > 0) {
-      const prevTasksDeleteQuery = `DELETE FROM airflow_task WHERE dag_id = '${params[0].dag_id}'`;
+      const prevTasksDeleteQuery = `DELETE FROM workflow_task WHERE dag_id = '${params[0].dag_id}'`;
       await connection.query(prevTasksDeleteQuery);
 
       params.forEach(async (task: IAirflowTask) => {
-        let query = `INSERT INTO airflow_task (dag_id, task_id, task_type, code, creator) VALUES ('${
+        let query = `INSERT INTO workflow_task (dag_id, task_id, task_type, code, creator) VALUES ('${
           task.dag_id
         }', '${task.task_id}', '${task.task_type}', '${task.code?.replaceAll(
           "'",

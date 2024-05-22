@@ -1,6 +1,5 @@
 import {
   useState,
-  useEffect,
   useCallback,
   useImperativeHandle,
   forwardRef,
@@ -9,6 +8,7 @@ import {
   type Ref,
 } from "react";
 import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 
 import { sleep, cn } from "@/util/comm_util";
 
@@ -45,6 +45,8 @@ const GsapModal = forwardRef(function GsapModal(
     gsap.timeline({})
   );
 
+  gsap.registerPlugin(useGSAP);
+
   useImperativeHandle(
     ref,
     () => {
@@ -62,47 +64,50 @@ const GsapModal = forwardRef(function GsapModal(
     [modalTimeline, onClose]
   );
 
-  useEffect(() => {
-    if (open) {
-      let timeline = gsap.timeline({ defaults: { ease: "power2.inOut" } });
+  const { contextSafe } = useGSAP(
+    () => {
+      if (open) {
+        let timeline = gsap.timeline({ defaults: { ease: "power2.inOut" } });
 
-      timeline
-        .to("#" + id, {
-          scaleY: 0.01,
-          x: 1,
-          opacity: 1,
-          display: "flex",
-          duration: 0.4,
-          zIndex: 999,
-        })
-        .to("#" + id, {
-          scaleY: 1,
-          background: "rgba(255,255,255,0.16)",
-          duration: 0.6,
-        })
-        .to(
-          "#" + id + " #second",
-          { scaleY: 1, opacity: 1, duration: 0.6 },
-          "-=0.4"
-        )
-        .to(
-          "#" + id + " #third",
-          { scaleY: 1, opacity: 1, duration: 0.4 },
-          "-=0.2"
-        )
-        .to(
-          "#" + id + " #fourth",
-          {
-            background: "rgba(255,255,255,0.3)",
-            border: "1px solid rgba(255,255,255,0.3)",
-            duration: 0.8,
-          },
-          "-=0.4"
-        );
+        timeline
+          .to("#" + id, {
+            scaleY: 0.01,
+            x: 1,
+            opacity: 1,
+            display: "flex",
+            duration: 0.4,
+            zIndex: 999,
+          })
+          .to("#" + id, {
+            scaleY: 1,
+            background: "rgba(255,255,255,0.16)",
+            duration: 0.6,
+          })
+          .to(
+            "#" + id + " #second",
+            { scaleY: 1, opacity: 1, duration: 0.6 },
+            "-=0.4"
+          )
+          .to(
+            "#" + id + " #third",
+            { scaleY: 1, opacity: 1, duration: 0.4 },
+            "-=0.2"
+          )
+          .to(
+            "#" + id + " #fourth",
+            {
+              background: "rgba(255,255,255,0.3)",
+              border: "1px solid rgba(255,255,255,0.3)",
+              duration: 0.8,
+            },
+            "-=0.4"
+          );
 
-      setModalTimeline(timeline);
-    }
-  }, [id, open]);
+        setModalTimeline(timeline);
+      }
+    },
+    { dependencies: [id, open] }
+  );
 
   const handleSave = useCallback(() => {
     // modalTimeline.reverse();
@@ -114,11 +119,11 @@ const GsapModal = forwardRef(function GsapModal(
     onDelete?.();
   }, [onDelete]);
 
-  const handleClose = useCallback(async () => {
+  const handleClose = contextSafe(async () => {
     modalTimeline.reverse(1500);
     await sleep(1500);
     onClose?.();
-  }, [modalTimeline, onClose]);
+  });
 
   return (
     <div

@@ -1,6 +1,10 @@
 // import { Pool } from "pg";
 import mariadb from "mariadb";
 
+(BigInt.prototype as any).toJSON = function () {
+  return this.toString();
+};
+
 // const connection: Pool = new Pool({
 //   host: "localhost",
 //   database: "airflow",

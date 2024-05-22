@@ -19,7 +19,7 @@ export default function Header(): ReactElement {
 
   gsap.registerPlugin(useGSAP);
 
-  useGSAP(
+  const { contextSafe } = useGSAP(
     () => {
       if (prefersReducedMotion) {
         gsap.set(container.current, { opacity: 1 });
@@ -52,11 +52,11 @@ export default function Header(): ReactElement {
     [setTheme]
   );
 
-  const handleLink = useCallback(
+  const handleLink = contextSafe(
     (url: string) => {
       doAnimatePageOut("#transition-element", url, router);
-    },
-    [doAnimatePageOut, router]
+    }
+    // [doAnimatePageOut, router]
   );
 
   return (

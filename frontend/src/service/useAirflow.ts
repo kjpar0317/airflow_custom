@@ -44,11 +44,11 @@ export default function useAirflow() {
     `dag_id_${_errorDagId}`,
     () =>
       _errorDagId &&
-      getTabclouditTextFetch(`/cmp-api/airflow/dag/code?dagId=${_errorDagId}`)
+      getTabclouditTextFetch(`/cmp-api/workflow/dag/code?dagId=${_errorDagId}`)
   );
   // swr mutation 예제
   const { trigger: deleteDagFlow } = useSWRMutation(
-    `/cmp-api/airflow/flow/dag/delete`,
+    `/cmp-api/workflow/flow/dag/delete`,
     (key: string, options: any) => fetchTabcloudit(key, "POST", options)
   );
 

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ReactElement, ChangeEvent } from "react";
+import type { ReactElement, ChangeEvent, KeyboardEvent } from "react";
 import type { Node } from "reactflow";
 
 import { useState, useCallback, useMemo } from "react";
@@ -32,12 +32,13 @@ export default function FlowInputField({
       if (e.currentTarget) {
         const targetValue = e.currentTarget.value;
 
+        setValue(targetValue?.replace(" ", ""));
+
         if (!validEditTask(targetValue)) {
           toast.warn(`task_id: ${targetValue}이 겹칩니다.`);
           return;
         }
 
-        setValue(targetValue);
         setNodes((nds: Node[]) =>
           nds
             .filter((node: Node) => node.id === nodeId)
@@ -48,6 +49,7 @@ export default function FlowInputField({
         );
         setMoveTaskCodeByChangeTaskId(currentNode?.data.label, targetValue);
       }
+      e.preventDefault();
     },
     [
       currentNode?.data.label,

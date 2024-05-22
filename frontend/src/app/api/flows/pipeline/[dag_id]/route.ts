@@ -9,7 +9,7 @@ export const GET = async (
   { params }: { params: IAirflowPipeline }
 ) => {
   try {
-    const query = `SELECT dag_id, order, pipeline, creator FROM airflow_pipeline WHERE dag_id = ${params.dag_id}`;
+    const query = `SELECT dag_id, order, pipeline, creator FROM workflow_pipeline WHERE dag_id = ${params.dag_id}`;
 
     const result = await connection.query(query);
 
@@ -29,12 +29,12 @@ export const PUT = async (
 
     const body: string[] = await req.json();
 
-    const deleteQuery = `DELETE FROM airflow_pipeline WHERE dag_id = '${params.dag_id}'`;
+    const deleteQuery = `DELETE FROM workflow_pipeline WHERE dag_id = '${params.dag_id}'`;
 
     await connection.query(deleteQuery);
 
     body.forEach(async (pipeline: string, index: number) => {
-      const query = `INSERT INTO airflow_pipeline (dag_id, pipeline_order, pipeline, creator) VALUES ('${
+      const query = `INSERT INTO workflow_pipeline (dag_id, pipeline_order, pipeline, creator) VALUES ('${
         params.dag_id
       }', ${index + 1}, '${pipeline}', 'admin')`;
       await connection.query(query);

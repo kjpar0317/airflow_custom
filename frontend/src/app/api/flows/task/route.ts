@@ -8,10 +8,10 @@ export const POST = async (req: NextRequest) => {
   try {
     const params: IAirflowTask = await req.json();
 
-    const selectQuery = `SELECT dag_id FROM airflow_task where dag_id = '${params.dag_id}' and task_id = '${params.task_id}'`;
+    const selectQuery = `SELECT dag_id FROM workflow_task where dag_id = '${params.dag_id}' and task_id = '${params.task_id}'`;
     const selectResult = await connection.query(selectQuery);
 
-    let query = `INSERT INTO airflow_task (dag_id, task_id, task_type, code, creator) VALUES ('${
+    let query = `INSERT INTO workflow_task (dag_id, task_id, task_type, code, creator) VALUES ('${
       params.dag_id
     }', '${params.task_id}', '${params.task_type}', '${params.code?.replaceAll(
       "'",
@@ -19,7 +19,7 @@ export const POST = async (req: NextRequest) => {
     )}', 'admin')`;
 
     if (selectResult && selectResult.length > 0) {
-      query = `UPDATE airflow_task
+      query = `UPDATE workflow_task
         SET
           task_type = '${params.task_type}',
           code = '${params.code?.replaceAll("'", '"')}',

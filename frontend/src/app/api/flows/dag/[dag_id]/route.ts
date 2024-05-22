@@ -14,7 +14,7 @@ export const PUT = async (
     if (!params.dag_id) return;
 
     // MARIADB
-    const query = `UPDATE airflow_dag
+    const query = `UPDATE workflow_dag
         SET
           dag_name = '${body.dag_name}',
           dag_nodes = '${JSON.stringify(body.dag_nodes ?? "", null)}',
@@ -39,13 +39,13 @@ export const DELETE = async (
   { params }: { params: IAirflowDag }
 ) => {
   try {
-    const pipelineQuery = `DELETE FROM airflow_pipeline WHERE dag_id = '${params.dag_id}'`;
+    const pipelineQuery = `DELETE FROM workflow_pipeline WHERE dag_id = '${params.dag_id}'`;
     await connection.query(pipelineQuery);
 
-    const taskQuery = `DELETE FROM airflow_task WHERE dag_id = '${params.dag_id}'`;
+    const taskQuery = `DELETE FROM workflow_task WHERE dag_id = '${params.dag_id}'`;
     await connection.query(taskQuery);
 
-    const dagQuery = `DELETE FROM airflow_dag WHERE dag_id = '${params.dag_id}'`;
+    const dagQuery = `DELETE FROM workflow_dag WHERE dag_id = '${params.dag_id}'`;
     await connection.query(dagQuery);
     return NextResponse.json({});
   } catch (error: any) {
