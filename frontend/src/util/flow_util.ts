@@ -129,13 +129,13 @@ export class FlowUtil {
 
       // 으아 어렵다
       if (target_nodes?.type === "branch") {
-        const branch_pipeline: string =
-          current_pipeline +
-          DIVID_PIPELINE +
+        let branch_pipeline: string = current_pipeline + DIVID_PIPELINE;
+
+        branch_pipeline +=
           "[" +
-          next_edges[0].target +
-          DIVID_FLOW_IN_ARRAY +
-          next_edges[1].target +
+          next_edges
+            .map((next_edge) => next_edge.target)
+            .join(DIVID_FLOW_IN_ARRAY) +
           "]";
 
         return (
